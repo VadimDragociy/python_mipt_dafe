@@ -30,6 +30,6 @@ def get_boxplot_outliers(
     mask = mask_high + mask_low
 
     if cr_data.shape[1] > 1:
-        mask = np.prod(mask, 1)
+        mask = np.sum(mask, axis=1)
 
     return np.where(mask != 0)

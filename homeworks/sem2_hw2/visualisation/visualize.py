@@ -31,6 +31,10 @@ def visualize_regression(
         raise TypeError(
             "np.ndarray type is intended for trend"
         )
+    if not (full_data.shape[1] == 2 and trend.shape[1] == 2):
+        raise ShapeMismatchError(
+            "shape[1] == 2 is intended for trend and full_data"
+        )
 
     _, (ax1, ax2) = plt.subplots(1, 2, figsize=FIGSIZE)
 
@@ -48,6 +52,14 @@ def visualize_regression(
         ):
             raise TypeError(
                 "np.ndarray type is intended for error_corridor containments"
+            )
+        if (
+            not error_corridor[0].shape[1] == 2
+            or
+            not error_corridor[1].shape[1] == 2
+        ):
+            raise ShapeMismatchError(
+                "shape[1] == 2 is intended for error_corridor containments"
             )
         _visualize_regression_additional(error_corridor[1], ax2, True)
         _visualize_regression_additional(error_corridor[0], ax2, True)
@@ -77,6 +89,10 @@ def visualize_classification(
     if not isinstance(points, np.ndarray):
         raise TypeError(
             "np.ndarray type is intended for points"
+        )
+    if not points.shape[1] == 2:
+        raise ShapeMismatchError(
+            "shape[1] == 2 is intended for points"
         )
     if not isinstance(labels, np.ndarray):
         raise TypeError(
@@ -237,9 +253,10 @@ def _visualize_regression_additional(
     ticky: Optional[bool] = False,
     trendy: Optional[bool] = False
 ) -> None:
-
     if ticky:
-        axis.plot(*points.T, color="blue", linestyle="dotted")
+        points = np.sort(points, axis=0)
+        axis.plot(*points.T, color="blue", linestyle="dashed")
+        # axis.scatter(*points.T, color="blue", marker=".")
     if trendy:
         axis.plot(*points.T, color="blue")
     elif not trendy and not ticky:
@@ -261,6 +278,7 @@ def _saving_mechanism(path_to_save: str = "") -> bool:
                 f"File {path_to_save} already exists, hope it's nothing important :)",
                 Warning
             )
+
     else:
         save = False
 

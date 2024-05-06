@@ -13,6 +13,9 @@ def test_vis_regr():
 
     points = np.concatenate((x, y1), 1)
     trend = np.concatenate((x, y2), 1)
+    # print(x[:2],y3[:2])
+    # error_corridor1 = np.concatenate((np.concatenate((x[0],x[x.shape[0]-1])), np.concatenate((y3[0],y3[y3.shape[0]-1]))), 1)
+    # error_corridor2 = np.concatenate((np.concatenate((x[0],x[x.shape[0]-1])), np.concatenate((y4[0],y4[y4.shape[0]-1]))), 1)
     error_corridor1 = np.concatenate((x, y3), 1)
     error_corridor2 = np.concatenate((x, y4), 1)
     visualize_regression(points, trend, (error_corridor1, error_corridor2))
